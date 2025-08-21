@@ -83,18 +83,53 @@ private:
     int doctorCounter;
 
 public:
-    Hospital();
+    Hospital(){
+    patientCounter =1;
+    doctorCounter =1;
+    }
 
-    int registerPatient(string name, int age, string contact);
-    int addDoctor(string name, Department dept);
+    int registerPatient(string name, int age, string contact){
+    Patient addPatient (patientCounter, name, age, contact);
+    patients.push_back(addPatient);
+    return patientCounter++;
+    }
+
+    int addDoctor(string name, Department dept){
+    Doctor extraDoctor (doctorCounter, name, dept);
+    doctors.push_back(extraDoctor);
+    return doctorCounter++;
+    }
+
     void admitPatient(int patientId, RoomType type);
     void addEmergency(int patientId);
     int handleEmergency();
     void bookAppointment(int doctorId, int patientId);
-    void displayPatientInfo(int patientId);
-    void displayDoctorInfo(int doctorId);
+    void displayPatientInfo(int patientId){
+        for(int i=0 ; i<patients.size(); i++){
+            if(patients[i].getId() == patientId){
+                cout << "Patient ID: " << patients[i].getId() << endl;
+                cout << "Name: " << patients[i].getName() << endl;
+                cout << "Admission Status: " << (patients[i].getAdmissionStatus()? "Admitted" : "Not Admitted") << endl;
+                cout << "Medical History: ";
+                patients[i].displayHistory();
+                cout << endl;
+                return;
+            }
+        }
+        cout << "You entered wrong ID or Patient not found!" << endl;
+    }
+    void displayDoctorInfo(int doctorId){
+        for(int i=0 ; i<doctors.size(); i++){
+            if(doctors[i].getId() == doctorId){
+                cout << "Doctor ID: " << doctors[i].getId() << endl;
+                cout << "Doctor Name: " << doctors[i].getName() << endl;
+                cout << "Doctor Department: " << doctors[i].getDepartment() << endl;
+                return;
+            }
+        }
+        cout << "You entered wrong ID or Doctor not found!" << endl;
+    }
 };
-
 // ========== MAIN PROGRAM ========== //
 int main()
 {
