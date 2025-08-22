@@ -52,11 +52,13 @@ public:
         isAdmitted = true;
         addMedicalRecord("The patient is Admitted");
     }
+
     void dischargePatient()
     {
         isAdmitted = false;
         addMedicalRecord("The patient is discharched");
     }
+
     void addMedicalRecord(string record)
     {
         medicalHistory.push(record);
@@ -92,13 +94,39 @@ private:
     queue<int> appointmentQueue;
 
 public:
-    Doctor(int did, string n, Department d);
+    Doctor(int did, string n, Department d)
+    {
+        id = did;
+        name = n;
+        department = d;
+    }
 
-    void addAppointment(int patientId);
-    int seePatient();
+    void addAppointment(int patientId)
+    {
+        appointmentQueue.push(patientId);
+    }
 
-    int getId();
-    string getName();
+    int seePatient()
+    {
+        if (appointmentQueue.empty())
+        {
+            cout << "No more Patients" << endl;
+            return -1;
+        }
+
+        int next_Patient = appointmentQueue.front();
+        appointmentQueue.pop();
+        return next_Patient;
+    }
+
+    int getId()
+    {
+        return id;
+    }
+    string getName()
+    {
+        return name;
+    }
     string getDepartment();
 };
 
@@ -137,6 +165,7 @@ public:
     void addEmergency(int patientId);
     int handleEmergency();
     void bookAppointment(int doctorId, int patientId);
+
     void displayPatientInfo(int patientId)
     {
         for (int i = 0; i < patients.size(); i++)
