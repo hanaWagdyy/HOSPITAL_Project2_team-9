@@ -193,12 +193,66 @@ public:
         return doctorCounter++;
     }
 
-    void admitPatient(int patientId, RoomType type);
-    void addEmergency(int patientId);
-    int handleEmergency();
-    void bookAppointment(int doctorId, int patientId);
+    
+    void admitPatient(int patientId, RoomType type)
+    {
+        for (auto& patient: patient)
+        {
+            if (patient.getId() == patientId)
+            {
+                if(paatient.getAdmissionStatus())
+                {
+                   cout<<"Patient already admitted.\n";
+                   return;
+                }
+                patient.admiPatient(type);
+                cout<<"Paitient admitted successfully.\n";
+                retun;
+            }
+    }
+    cot<<"Patient not found,\n";
+    }
+    void addEmergency(int patientId)
+    {
+        emergencyQueue.push(patientId);
+        cout<<"Emergency  added for patient ID"<<patientId<<endl;
+    }
+    int handleEmergency()
+    {
+     if(emergecyQueue.enpty()){
+        cout<<"No emergency cases.\n";
+        retun -1;
+     }
+     int patientId = emergencyQueue.front();
+     emergencyQueue.pop();
+     cout<<"Handing emergency for patient ID "<< patientId << endl;
+     return patientId;
+    }
+    void bookAppointment(int doctorId, int patientId){
+        Doctor* doctorPtr = nullptr;
+        Patient* patientPtr = nullptr;
+        for(auto& doc : doctors)
+        if (doc.getId() == patientId)
+        patientPtr = &pat;
+        
+        for(auto& pat : patients)
+         if (pat.getId() == patientId)
+         patintPtr = &pat;
+        if(!doctorPtr)
+        {
+            cout<< "Doctor not found.\n";
+            return;
+        }
+        if(!patientPtr) 
+         {
+            cout<< "Doctor not found.\n";
+            return;
+        }
+        doctorPtr->addAppointment(patintId);
+        cout<<"A;ppointment biiked for patient ID"<<patientId <<"with doctor ID"<<doctorId <<endl;
+    }
 
-    void displayPatientInfo(int patientId)
+
     {
         for (int i = 0; i < patients.size(); i++)
         {
