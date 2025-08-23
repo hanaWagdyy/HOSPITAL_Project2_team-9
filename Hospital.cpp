@@ -127,7 +127,27 @@ public:
     {
         return name;
     }
-    string getDepartment();
+    string getDepartment()
+    {
+        switch (department)
+        {
+        case CARDIOLOGY:
+            return "CARDIOLOGY";
+        case NEUROLOGY:
+            return "NEUROLOGY";
+        case ORTHOPEDICS:
+            return "ORTHOPEDICS";
+        case PEDIATRICS:
+            return "PEDIATRICS";
+        case EMERGENCY:
+            return "EMERGENCY";
+        case GENERAL:
+            return "GENERAL";
+
+        default:
+            return "Unknown";
+        }
+    }
 };
 
 // ========== HOSPITAL CLASS ========== //
