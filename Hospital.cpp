@@ -44,27 +44,59 @@ public:
         name = n;
         age = a;
         contact = c;
+        isAdmitted = false;
     }
 
     void admitPatient(RoomType type)
     {
         roomType = type;
         isAdmitted = true;
-        addMedicalRecord("The patient is Admitted");
+        addMedicalRecord("The patient is admitted.");
     }
     void dischargePatient()
     {
         isAdmitted = false;
-        addMedicalRecord("The patient is discharched");
+        addMedicalRecord("The patient is discharged.");
     }
     void addMedicalRecord(string record)
     {
         medicalHistory.push(record);
     }
 
-    void requestTest(string testName);
-    string performTest();
-    void displayHistory();
+    void requestTest(string testName){
+        testQueue.push(testName);
+        addMedicalRecord("Test (" + testName + ") is requested.");
+    }
+
+    string performTest(){
+        if(!testQueue.empty()){
+            string test = testQueue.front();
+            addMedicalRecord("Test (" + test + ") is performed.");
+            testQueue.pop();
+            return "";
+        }
+        return "No tests pending";
+    }
+
+    void displayHistory(){
+        stack<string> temp;
+
+        while(!medicalHistory.empty()){
+            string Top = medicalHistory.top();
+            temp.push(Top);
+            medicalHistory.pop();
+        }
+
+        cout << "Medical history of patient: " << endl;
+        cout << "--------------------------------------" << endl;
+        
+        while(!temp.empty()){
+            string record = temp.top();
+            cout << record << endl;
+            medicalHistory.push(record);
+            temp.pop();
+        }
+    }
 
     int getId()
     {
