@@ -44,19 +44,20 @@ public:
         name = n;
         age = a;
         contact = c;
+        isAdmitted = false;
     }
 
     void admitPatient(RoomType type)
     {
         roomType = type;
         isAdmitted = true;
-        addMedicalRecord("The patient is Admitted");
+        addMedicalRecord("The patient is admitted.");
     }
 
     void dischargePatient()
     {
         isAdmitted = false;
-        addMedicalRecord("The patient is discharched");
+        addMedicalRecord("The patient is discharged.");
     }
 
     void addMedicalRecord(string record)
@@ -64,9 +65,46 @@ public:
         medicalHistory.push(record);
     }
 
-    void requestTest(string testName);
-    string performTest();
-    void displayHistory();
+    void requestTest(string testName)
+    {
+        testQueue.push(testName);
+        addMedicalRecord("Test (" + testName + ") is requested.");
+    }
+
+    string performTest()
+    {
+        if (!testQueue.empty())
+        {
+            string test = testQueue.front();
+            addMedicalRecord("Test (" + test + ") is performed.");
+            testQueue.pop();
+            return "";
+        }
+        return "No tests pending";
+    }
+
+    void displayHistory()
+    {
+        stack<string> temp;
+
+        while (!medicalHistory.empty())
+        {
+            string Top = medicalHistory.top();
+            temp.push(Top);
+            medicalHistory.pop();
+        }
+
+        cout << "Medical history of patient: " << endl;
+        cout << "--------------------------------------" << endl;
+
+        while (!temp.empty())
+        {
+            string record = temp.top();
+            cout << record << endl;
+            medicalHistory.push(record);
+            temp.pop();
+        }
+    }
 
     int getId()
     {
@@ -181,10 +219,68 @@ public:
         return doctorCounter++;
     }
 
-    void admitPatient(int patientId, RoomType type);
-    void addEmergency(int patientId);
-    int handleEmergency();
-    void bookAppointment(int doctorId, int patientId);
+    void admitPatient(int patientId, RoomType type)
+    {
+        for (auto &patient : patients)
+        {
+            if (patient.getId() == patientId)
+            {
+                if (patient.getAdmissionStatus())
+                {
+                    cout << "Patient already admitted.\n";
+                    return;
+                }
+                patient.admitPatient(type);
+                cout << "Paitient admitted successfully.\n";
+                return;
+            }
+        }
+        cout << "Patient not found,\n";
+    }
+    void addEmergency(int patientId)
+    {
+        emergencyQueue.push(patientId);
+        cout << "Emergency  added for patient ID" << patientId << endl;
+    }
+
+    int handleEmergency()
+    {
+        if (emergencyQueue.empty())
+        {
+            cout << "No emergency cases.\n";
+            return -1;
+        }
+
+        int patientId = emergencyQueue.front();
+        emergencyQueue.pop();
+        cout << "Handing emergency for patient ID " << patientId << endl;
+        return patientId;
+    }
+
+    void bookAppointment(int doctorId, int patientId)
+    {
+        Doctor *doctorPtr = nullptr;
+        Patient *patientPtr = nullptr;
+        for (auto &doc : doctors)
+            if (doc.getId() == doctorId)
+                doctorPtr = &doc;
+
+        for (auto &pat : patients)
+            if (pat.getId() == patientId)
+                patientPtr = &pat;
+        if (!doctorPtr)
+        {
+            cout << "Doctor not found.\n";
+            return;
+        }
+        if (!patientPtr)
+        {
+            cout << "Patient not found.\n";
+            return;
+        }
+        doctorPtr->addAppointment(patientId);
+        cout << "Appointment booked for patient ID" << patientId << "with doctor ID" << doctorId << endl;
+    }
 
     void displayPatientInfo(int patientId)
     {
