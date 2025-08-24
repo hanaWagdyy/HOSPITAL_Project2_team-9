@@ -192,8 +192,8 @@ public:
 class Hospital
 {
 private:
-    vector<Patient> patients;
-    vector<Doctor> doctors;
+    vector<Patient *> patients;
+    vector<Doctor *> doctors;
     queue<int> emergencyQueue;
     int patientCounter;
     int doctorCounter;
@@ -207,15 +207,17 @@ public:
 
     int registerPatient(string name, int age, string contact)
     {
-        Patient addPatient(patientCounter, name, age, contact);
+        Patient *addPatient = new Patient(patientCounter, name, age, contact);
         patients.push_back(addPatient);
+        cout << "Patient " << name << "  ID: " << patientCounter << " is registed successfully" << endl;
         return patientCounter++;
     }
 
     int addDoctor(string name, Department dept)
     {
-        Doctor extraDoctor(doctorCounter, name, dept);
+        Doctor *extraDoctor = new Doctor(doctorCounter, name, dept);
         doctors.push_back(extraDoctor);
+        cout << "Doctor " << name << "  ID: " << doctorCounter << " is added successfully" << endl;
         return doctorCounter++;
     }
 
@@ -223,15 +225,15 @@ public:
     {
         for (auto &patient : patients)
         {
-            if (patient.getId() == patientId)
+            if (patient->getId() == patientId)
             {
-                if (patient.getAdmissionStatus())
+                if (patient->getAdmissionStatus())
                 {
-                    cout << "Patient already admitted.\n";
+                    cout << "Patient " << patientId << " already admitted.\n";
                     return;
                 }
-                patient.admitPatient(type);
-                cout << "Paitient admitted successfully.\n";
+                patient->admitPatient(type);
+                cout << "Paitient " << patientId << "  admitted successfully.\n";
                 return;
             }
         }
@@ -240,7 +242,7 @@ public:
     void addEmergency(int patientId)
     {
         emergencyQueue.push(patientId);
-        cout << "Emergency  added for patient ID" << patientId << endl;
+        cout << "Emergency  added for patient ID: " << patientId << endl;
     }
 
     int handleEmergency()
@@ -253,7 +255,16 @@ public:
 
         int patientId = emergencyQueue.front();
         emergencyQueue.pop();
-        cout << "Handing emergency for patient ID " << patientId << endl;
+
+        Patient *patientPtr = nullptr; // to add to medical records
+        for (auto &pat : patients)
+            if (pat->getId() == patientId)
+                patientPtr = pat;
+
+        if (patientPtr)
+            patientPtr->addMedicalRecord("Emergency handeled for patient. ");
+
+        cout << "Handling emergency for patient ID: " << patientId << endl;
         return patientId;
     }
 
@@ -262,12 +273,12 @@ public:
         Doctor *doctorPtr = nullptr;
         Patient *patientPtr = nullptr;
         for (auto &doc : doctors)
-            if (doc.getId() == doctorId)
-                doctorPtr = &doc;
+            if (doc->getId() == doctorId)
+                doctorPtr = doc;
 
         for (auto &pat : patients)
-            if (pat.getId() == patientId)
-                patientPtr = &pat;
+            if (pat->getId() == patientId)
+                patientPtr = pat;
         if (!doctorPtr)
         {
             cout << "Doctor not found.\n";
@@ -279,20 +290,22 @@ public:
             return;
         }
         doctorPtr->addAppointment(patientId);
-        cout << "Appointment booked for patient ID" << patientId << "with doctor ID" << doctorId << endl;
+        cout << "Appointment booked for patient ID: " << patientId << " Name: " << patientPtr->getName() << endl
+             << " with doctor ID: " << doctorId << " Name: " << doctorPtr->getName() << endl;
+        patientPtr->addMedicalRecord("Appointment booked with " + doctorPtr->getName() + "[" + doctorPtr->getDepartment() + "]"); // add to medical records
     }
 
     void displayPatientInfo(int patientId)
     {
         for (int i = 0; i < patients.size(); i++)
         {
-            if (patients[i].getId() == patientId)
+            if (patients[i]->getId() == patientId)
             {
-                cout << "Patient ID: " << patients[i].getId() << endl;
-                cout << "Name: " << patients[i].getName() << endl;
-                cout << "Admission Status: " << (patients[i].getAdmissionStatus() ? "Admitted" : "Not Admitted") << endl;
+                cout << "Patient ID: " << patients[i]->getId() << endl;
+                cout << "Name: " << patients[i]->getName() << endl;
+                cout << "Admission Status: " << (patients[i]->getAdmissionStatus() ? "Admitted" : "Not Admitted") << endl;
                 cout << "Medical History: ";
-                patients[i].displayHistory();
+                patients[i]->displayHistory();
                 cout << endl;
                 return;
             }
@@ -303,11 +316,11 @@ public:
     {
         for (int i = 0; i < doctors.size(); i++)
         {
-            if (doctors[i].getId() == doctorId)
+            if (doctors[i]->getId() == doctorId)
             {
-                cout << "Doctor ID: " << doctors[i].getId() << endl;
-                cout << "Doctor Name: " << doctors[i].getName() << endl;
-                cout << "Doctor Department: " << doctors[i].getDepartment() << endl;
+                cout << "Doctor ID: " << doctors[i]->getId() << endl;
+                cout << "Doctor Name: " << doctors[i]->getName() << endl;
+                cout << "Doctor Department: " << doctors[i]->getDepartment() << endl;
                 return;
             }
         }
