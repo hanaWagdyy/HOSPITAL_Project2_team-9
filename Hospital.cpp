@@ -78,7 +78,7 @@ public:
             string test = testQueue.front();
             addMedicalRecord("Test (" + test + ") is performed.");
             testQueue.pop();
-            return "";
+            return test;
         }
         return "No tests pending";
     }
@@ -212,6 +212,30 @@ public:
         cout << "Patient " << name << "  ID: " << patientCounter << " is registed successfully" << endl;
         return patientCounter++;
     }
+    // to return a specfic patient
+    Patient *getPatient(int id)
+    {
+        for (Patient *i : patients)
+        {
+            if (i->getId() == id)
+            {
+                return i;
+            }
+        }
+        return nullptr;
+    }
+
+    Doctor *getDoctor(int id)
+    {
+        for (Doctor *i : doctors)
+        {
+            if (i->getId() == id)
+            {
+                return i;
+            }
+        }
+        return nullptr;
+    }
 
     int addDoctor(string name, Department dept)
     {
@@ -330,6 +354,7 @@ public:
 // ========== MAIN PROGRAM ========== //
 int main()
 {
+    
     Hospital hospital;
 
     // Test Case 1: Registering patients
@@ -351,6 +376,7 @@ int main()
     // Test Case 4: Booking appointments
     hospital.bookAppointment(d1, p1);
     hospital.bookAppointment(d1, p2);
+    hospital.bookAppointment(d1, p3);
     hospital.bookAppointment(d2, p3);
     // Try booking with invalid doctor/patient
     hospital.bookAppointment(999, p1); // Invalid doctor
@@ -359,6 +385,9 @@ int main()
     // Test Case 5: Handling medical tests
     // These would normally be called on Patient objects
     // In a real implementation, we'd need a way to access patients
+    Patient *P1 = hospital.getPatient(p2);
+    P1->requestTest("Heart Surgery");
+    P1->performTest();
 
     // Test Case 6: Emergency cases
     hospital.addEmergency(p3);
@@ -369,6 +398,8 @@ int main()
 
     // Test Case 7: Discharging patients
     // Would normally call dischargePatient() on Patient objects
+    Patient *P_1 = hospital.getPatient(p2);
+    P_1->dischargePatient();
 
     // Test Case 8: Displaying information
     hospital.displayPatientInfo(p1);
@@ -382,7 +413,11 @@ int main()
     // Test Case 9: Doctor seeing patients
     // These would normally be called on Doctor objects
     // In a real implementation, we'd need a way to access doctors
-
+    Doctor *D1 = hospital.getDoctor(d2);
+    cout  << " patient with id : " << D1->seePatient() << " is handeled" << endl;
+    cout  << " patient with id : " << D1->seePatient() << " is handeled" << endl;
+    cout  << " patient with id : " << D1->seePatient() << " is handeled" << endl;
+               
     // Test Case 10: Edge cases
     Hospital emptyHospital;
     emptyHospital.displayPatientInfo(1); // No patients
