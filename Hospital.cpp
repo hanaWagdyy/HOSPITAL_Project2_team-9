@@ -147,7 +147,8 @@ public:
     {
         if (appointmentQueue.empty())
         {
-            cout << "No more patients\n" << endl;
+            cout << "No more patients\n"
+                 << endl;
             return -1;
         }
 
@@ -208,7 +209,8 @@ public:
     {
         Patient *addPatient = new Patient(patientCounter, name, age, contact);
         patients.push_back(addPatient);
-        cout << "Patient " << name << ", ID: " << patientCounter << " is registered successfully.\n" << endl;
+        cout << "Patient " << name << ", ID: " << patientCounter << " is registered successfully.\n"
+             << endl;
         return patientCounter++;
     }
     // to return a specfic patient
@@ -240,7 +242,8 @@ public:
     {
         Doctor *extraDoctor = new Doctor(doctorCounter, name, dept);
         doctors.push_back(extraDoctor);
-        cout << "Doctor " << name << ", ID: " << doctorCounter << " is added successfully.\n" << endl;
+        cout << "Doctor " << name << ", ID: " << doctorCounter << " is added successfully.\n"
+             << endl;
         return doctorCounter++;
     }
 
@@ -252,11 +255,13 @@ public:
             {
                 if (patient->getAdmissionStatus())
                 {
-                    cout << "Patient " << patientId << " is already admitted.\n" << endl;
+                    cout << "Patient " << patientId << " is already admitted.\n"
+                         << endl;
                     return;
                 }
                 patient->admitPatient(type);
-                cout << "Patient " << patientId << " is admitted successfully.\n" << endl;
+                cout << "Patient " << patientId << " is admitted successfully.\n"
+                     << endl;
                 return;
             }
         }
@@ -265,7 +270,8 @@ public:
     void addEmergency(int patientId)
     {
         emergencyQueue.push(patientId);
-        cout << "Emergency added for patient ID: " << patientId << ".\n" << endl;
+        cout << "Emergency added for patient ID: " << patientId << ".\n"
+             << endl;
     }
 
     int handleEmergency()
@@ -287,7 +293,8 @@ public:
         if (patientPtr)
             patientPtr->addMedicalRecord("Emergency handled for patient.");
 
-        cout << "Handling emergency for patient ID: " << patientId << ".\n" << endl;
+        cout << "Handling emergency for patient ID: " << patientId << ".\n"
+             << endl;
         return patientId;
     }
 
@@ -304,17 +311,20 @@ public:
                 patientPtr = pat;
         if (!doctorPtr)
         {
-            cout << "Doctor not found.\n" << endl;
+            cout << "Doctor not found.\n"
+                 << endl;
             return;
         }
         if (!patientPtr)
         {
-            cout << "Patient not found.\n" << endl;
+            cout << "Patient not found.\n"
+                 << endl;
             return;
         }
         doctorPtr->addAppointment(patientId);
         cout << "Appointment booked for patient ID: " << patientId << " Name: " << patientPtr->getName() << endl
-             << " with doctor ID: " << doctorId << ", Name: " << doctorPtr->getName() << ".\n" << endl;
+             << " with doctor ID: " << doctorId << ", Name: " << doctorPtr->getName() << ".\n"
+             << endl;
         patientPtr->addMedicalRecord("Appointment booked with " + doctorPtr->getName() + "[" + doctorPtr->getDepartment() + "]"); // add to medical records
     }
 
@@ -334,7 +344,8 @@ public:
                 return;
             }
         }
-        cout << "You entered wrong ID or Patient not found!\n" << endl;
+        cout << "You entered wrong ID or Patient not found!\n"
+             << endl;
     }
     void displayDoctorInfo(int doctorId)
     {
@@ -344,17 +355,19 @@ public:
             {
                 cout << "Doctor ID: " << doctors[i]->getId() << endl;
                 cout << "Doctor Name: " << doctors[i]->getName() << endl;
-                cout << "Doctor Department: " << doctors[i]->getDepartment() << "\n" <<  endl;
+                cout << "Doctor Department: " << doctors[i]->getDepartment() << "\n"
+                     << endl;
                 return;
             }
         }
-        cout << "You entered wrong ID or Doctor not found!\n" << endl;
+        cout << "You entered wrong ID or Doctor not found!\n"
+             << endl;
     }
 };
 // ========== MAIN PROGRAM ========== //
 int main()
 {
-    
+
     Hospital hospital;
 
     // Test Case 1: Registering patients
