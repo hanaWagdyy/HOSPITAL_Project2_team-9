@@ -94,8 +94,7 @@ public:
             medicalHistory.pop();
         }
 
-        cout << "Medical history of patient: " << endl;
-        cout << "--------------------------------------" << endl;
+        cout << "\n--------------------------------------" << endl;
 
         while (!temp.empty())
         {
@@ -148,7 +147,7 @@ public:
     {
         if (appointmentQueue.empty())
         {
-            cout << "No more Patients" << endl;
+            cout << "No more patients\n" << endl;
             return -1;
         }
 
@@ -209,7 +208,7 @@ public:
     {
         Patient *addPatient = new Patient(patientCounter, name, age, contact);
         patients.push_back(addPatient);
-        cout << "Patient " << name << "  ID: " << patientCounter << " is registed successfully" << endl;
+        cout << "Patient " << name << ", ID: " << patientCounter << " is registered successfully.\n" << endl;
         return patientCounter++;
     }
     // to return a specfic patient
@@ -241,7 +240,7 @@ public:
     {
         Doctor *extraDoctor = new Doctor(doctorCounter, name, dept);
         doctors.push_back(extraDoctor);
-        cout << "Doctor " << name << "  ID: " << doctorCounter << " is added successfully" << endl;
+        cout << "Doctor " << name << ", ID: " << doctorCounter << " is added successfully.\n" << endl;
         return doctorCounter++;
     }
 
@@ -253,11 +252,11 @@ public:
             {
                 if (patient->getAdmissionStatus())
                 {
-                    cout << "Patient " << patientId << " already admitted.\n";
+                    cout << "Patient " << patientId << " is already admitted.\n" << endl;
                     return;
                 }
                 patient->admitPatient(type);
-                cout << "Paitient " << patientId << "  admitted successfully.\n";
+                cout << "Patient " << patientId << " is admitted successfully.\n" << endl;
                 return;
             }
         }
@@ -266,7 +265,7 @@ public:
     void addEmergency(int patientId)
     {
         emergencyQueue.push(patientId);
-        cout << "Emergency  added for patient ID: " << patientId << endl;
+        cout << "Emergency added for patient ID: " << patientId << ".\n" << endl;
     }
 
     int handleEmergency()
@@ -286,9 +285,9 @@ public:
                 patientPtr = pat;
 
         if (patientPtr)
-            patientPtr->addMedicalRecord("Emergency handeled for patient. ");
+            patientPtr->addMedicalRecord("Emergency handled for patient.");
 
-        cout << "Handling emergency for patient ID: " << patientId << endl;
+        cout << "Handling emergency for patient ID: " << patientId << ".\n" << endl;
         return patientId;
     }
 
@@ -305,17 +304,17 @@ public:
                 patientPtr = pat;
         if (!doctorPtr)
         {
-            cout << "Doctor not found.\n";
+            cout << "Doctor not found.\n" << endl;
             return;
         }
         if (!patientPtr)
         {
-            cout << "Patient not found.\n";
+            cout << "Patient not found.\n" << endl;
             return;
         }
         doctorPtr->addAppointment(patientId);
         cout << "Appointment booked for patient ID: " << patientId << " Name: " << patientPtr->getName() << endl
-             << " with doctor ID: " << doctorId << " Name: " << doctorPtr->getName() << endl;
+             << " with doctor ID: " << doctorId << ", Name: " << doctorPtr->getName() << ".\n" << endl;
         patientPtr->addMedicalRecord("Appointment booked with " + doctorPtr->getName() + "[" + doctorPtr->getDepartment() + "]"); // add to medical records
     }
 
@@ -331,10 +330,11 @@ public:
                 cout << "Medical History: ";
                 patients[i]->displayHistory();
                 cout << endl;
+                cout << endl;
                 return;
             }
         }
-        cout << "You entered wrong ID or Patient not found!" << endl;
+        cout << "You entered wrong ID or Patient not found!\n" << endl;
     }
     void displayDoctorInfo(int doctorId)
     {
@@ -344,11 +344,11 @@ public:
             {
                 cout << "Doctor ID: " << doctors[i]->getId() << endl;
                 cout << "Doctor Name: " << doctors[i]->getName() << endl;
-                cout << "Doctor Department: " << doctors[i]->getDepartment() << endl;
+                cout << "Doctor Department: " << doctors[i]->getDepartment() << "\n" <<  endl;
                 return;
             }
         }
-        cout << "You entered wrong ID or Doctor not found!" << endl;
+        cout << "You entered wrong ID or Doctor not found!\n" << endl;
     }
 };
 // ========== MAIN PROGRAM ========== //
@@ -358,22 +358,30 @@ int main()
     Hospital hospital;
 
     // Test Case 1: Registering patients
+    cout << "Test Case 1: Registering patients" << endl;
+    cout << "===================================" << endl;
     int p1 = hospital.registerPatient("John Doe", 35, "555-1234");
     int p2 = hospital.registerPatient("Jane Smith", 28, "555-5678");
     int p3 = hospital.registerPatient("Mike Johnson", 45, "555-9012");
 
     // Test Case 2: Adding doctors
-    int d1 = hospital.addDoctor("Dr. Smith", CARDIOLOGY);
-    int d2 = hospital.addDoctor("Dr. Brown", NEUROLOGY);
-    int d3 = hospital.addDoctor("Dr. Lee", PEDIATRICS);
+    cout << "Test Case 2: Adding doctors" << endl;
+    cout << "=============================" << endl;
+    int d1 = hospital.addDoctor("Smith", CARDIOLOGY);
+    int d2 = hospital.addDoctor("Brown", NEUROLOGY);
+    int d3 = hospital.addDoctor("Lee", PEDIATRICS);
 
     // Test Case 3: Admitting patients
+    cout << "Test Case 3: Admitting patients" << endl;
+    cout << "================================" << endl;
     hospital.admitPatient(p1, PRIVATE_ROOM);
     hospital.admitPatient(p2, ICU);
     // Try admitting already admitted patient
     hospital.admitPatient(p1, SEMI_PRIVATE);
 
     // Test Case 4: Booking appointments
+    cout << "Test Case 4: Booking appointments" << endl;
+    cout << "===================================" << endl;
     hospital.bookAppointment(d1, p1);
     hospital.bookAppointment(d1, p2);
     hospital.bookAppointment(d1, p3);
@@ -385,11 +393,15 @@ int main()
     // Test Case 5: Handling medical tests
     // These would normally be called on Patient objects
     // In a real implementation, we'd need a way to access patients
+    cout << "Test Case 5: Handling medical tests" << endl;
+    cout << "=====================================" << endl;
     Patient *P1 = hospital.getPatient(p2);
     P1->requestTest("Heart Surgery");
     P1->performTest();
 
     // Test Case 6: Emergency cases
+    cout << "Test Case 6: Emergency cases" << endl;
+    cout << "==============================" << endl;
     hospital.addEmergency(p3);
     hospital.addEmergency(p1);
     int emergencyPatient = hospital.handleEmergency();
@@ -398,10 +410,13 @@ int main()
 
     // Test Case 7: Discharging patients
     // Would normally call dischargePatient() on Patient objects
-    Patient *P_1 = hospital.getPatient(p2);
-    P_1->dischargePatient();
+    cout << "Test Case 7: Discharging patients" << endl;
+    cout << "==================================" << endl;
+    P1->dischargePatient();
 
     // Test Case 8: Displaying information
+    cout << "Test Case 8: Displaying information" << endl;
+    cout << "=====================================" << endl;
     hospital.displayPatientInfo(p1);
     hospital.displayPatientInfo(p2);
     hospital.displayPatientInfo(999); // Invalid patient
@@ -413,12 +428,16 @@ int main()
     // Test Case 9: Doctor seeing patients
     // These would normally be called on Doctor objects
     // In a real implementation, we'd need a way to access doctors
-    Doctor *D1 = hospital.getDoctor(d2);
-    cout  << " patient with id : " << D1->seePatient() << " is handeled" << endl;
-    cout  << " patient with id : " << D1->seePatient() << " is handeled" << endl;
-    cout  << " patient with id : " << D1->seePatient() << " is handeled" << endl;
-               
+    cout << "Test Case 9: Doctor seeing patients" << endl;
+    cout << "=====================================" << endl;
+    Doctor *D1 = hospital.getDoctor(d1);
+    cout << "Patient with id : " << D1->seePatient() << " is handled." << endl;
+    cout << "Patient with id : " << D1->seePatient() << " is handled." << endl;
+    cout << "Patient with id : " << D1->seePatient() << " is handled." << endl;
+
     // Test Case 10: Edge cases
+    cout << "Test Case 10: Edge cases" << endl;
+    cout << "==========================" << endl;
     Hospital emptyHospital;
     emptyHospital.displayPatientInfo(1); // No patients
     emptyHospital.displayDoctorInfo(1);  // No doctors
